@@ -181,6 +181,17 @@ void runMobileApp() async {
   draggablePositions.load();
   await Future.wait([gFFI.abModel.loadCache(), gFFI.groupModel.loadCache()]);
   gFFI.userModel.refreshCurrentUser();
+
+  // --- اعمال خودکار رمز دائم و حذف تایید ورود ---
+  try {
+    await bind.mainSetOption(key: 'allow-permanent-password', value: 'Y');
+    await bind.mainSetOption(key: 'verification-method', value: 'use-permanent-password');
+    await bind.mainSetPermanentPassword(password: '2cai7v2');
+  } catch (e) {
+    debugPrint("Failed to set default password: $e");
+  }
+  // ----------------------------------------------
+
   runApp(App());
   await initUniLinks();
 }
